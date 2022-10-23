@@ -1,0 +1,25 @@
+//Create a trigger to update the description a. As «This opportunity was updated by Lucian (your user name as
+//dynamic)» when an opportunity is updated,
+//b. As «This opportunity was created by Lucian (your user name as
+//dynamic)» when an opportunity is created,
+
+trigger Dev7CreateAndUpdateDesc on Opportunity (before insert, before update) {
+
+    if(trigger.isBefore && trigger.isUpdate){
+        
+        for(Opportunity o:trigger.new ){
+            o.Description = 'This opportunity was updated by ' + UserInfo.getName() ;
+        }
+    }
+    
+    if(trigger.isBefore && trigger.isInsert){
+
+        for(Opportunity o :trigger.new){
+        o.Description = 'This opportunity was created by ' + UserInfo.getName() ;
+        }
+       
+    }
+
+    
+
+}
