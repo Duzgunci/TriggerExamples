@@ -1,0 +1,55 @@
+---------*************ContactHandler**********--------------------------
+public class ContactHandler {
+    public static void beforeInsert(List<Contact> conList) {
+        for (Contact c : conList) {
+            c.Description = 'Created by contact trigger';
+        }
+     }
+    public static void beforeUpdate(List<Contact> conList) {
+        for (Contact c : conList) {
+            c.Description = 'Change made by ' + UserInfo.getName();
+    }
+
+} 
+}
+
+------------************Contact 4:*********------------------------------
+trigger Contact4 on Contact (before insert, before update) {
+    for (Contact c: Trigger.new) {
+        if (Trigger.isBefore && Trigger.isInsert) {
+            ContactHandler.beforeInsert(Trigger.new);
+        }
+        if (Trigger.isBefore && Trigger.isUpdate) {
+            ContactHandler.beforeUpdate(Trigger.new);
+        }
+
+    }
+}
+
+---------******************The same code but with SWITCH ON**********---------------------:
+
+
+trigger Contact4 on Contact (before insert, before update) {
+
+    for (Contact c : Trigger.new) {
+ /*       if (Trigger.isBefore && Trigger.isInsert) {
+            ContactHandler.beforeInsert(Trigger.new);
+        }
+        if (Trigger.isBefore && Trigger.isUpdate) {
+            ContactHandler.beforeUpdate(Trigger.new);
+        }
+
+    */
+    switch on Trigger.OperationType {
+        when BEFORE_INSERT {
+            ContactHandler.beforeInsert(Trigger.new);
+        }
+        when BEFORE_UPDATE {
+            ContactHandler.beforeUpdate(Trigger.new);
+        }
+    }
+
+
+    }
+
+}
