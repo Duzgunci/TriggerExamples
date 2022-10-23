@@ -1,0 +1,18 @@
+//Create a trigger to prevent users to change the Campaign start date. 
+//Add an «You cannot change campaign start date, please contact your Admin» error message.
+
+
+trigger DevCampaignEx on Campaign (before Update) {
+
+
+    list <Campaign> camList = [SELECT Name, StartDate FROM Campaign];
+          
+            for(Campaign c :camList){
+                
+                if(c.StartDate != Trigger.old[0].StartDate){
+
+                trigger.old[0].startDate.addError('You cannot change campaign start date, please contact your Admin');
+               }   
+            }
+        }
+
