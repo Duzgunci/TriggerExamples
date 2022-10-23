@@ -1,0 +1,11 @@
+//Throw an error whenever the user try to delete the contact which is associated to an account.
+
+
+trigger ContactBeforeDelete on Contact (before delete) {
+    for(Contact c :trigger.old){
+        if(c.AccountId != Null){
+            c.addError('You can\'t delete an Account which has a related Contact');
+        }
+    }
+
+}
